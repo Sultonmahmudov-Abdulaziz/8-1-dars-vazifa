@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from .models import Books,Comment
-from books.forms import CommentForm
+from books.forms import CommentForm,ResetPasswordForm
 
 
 class UsersView(View):
@@ -35,5 +35,15 @@ class AddCommentView(LoginRequiredMixin,View):
             )
             return redirect(reverse('users:detail', kwargs={'pk': book.id}))
         return render(request, 'users/detail.html', {'book': book, 'form': form})
+    
+
+
+
+class ResetPasswordView(LoginRequiredMixin,View):
+
+    def get(self,request):
+        form = ResetPasswordForm()
+
+        return render(request,template_name='users/reset_password.html',context={'form':form})
 
 

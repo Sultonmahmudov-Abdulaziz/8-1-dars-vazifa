@@ -61,3 +61,21 @@ class ProfileUpdateForm(forms.ModelForm):
 class CommentForm(forms.Form):
     comment_text = forms.CharField(widget=forms.Textarea(attrs={'rows':4}))
     stars_given = forms.IntegerField(max_value=5, min_value=1)
+
+
+class ResetPasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput)
+    new_password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+
+    def clean(self, data):
+        next_password = self.cleaned_data['next_password']
+        confirm_password = self.cleaned_data['confirm_password']
+
+
+        if next_password != confirm_password:
+            raise forms.ValidationError("Passwordlar bir biriga mos emas")
+        
+
+        return self.cleaned_data
